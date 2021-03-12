@@ -1,0 +1,87 @@
+prompt --application/pages/page_00004
+begin
+wwv_flow_api.create_page(
+ p_id=>4
+,p_user_interface_id=>wwv_flow_api.id(40708662826080105)
+,p_name=>'Delete Test Run?'
+,p_page_mode=>'MODAL'
+,p_step_title=>'Do you really want to delete?'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>wwv_flow_api.id(40591960630079708)
+,p_page_template_options=>'#DEFAULT#:t-Dialog--noPadding'
+,p_required_role=>wwv_flow_api.id(40711335611080246)
+,p_dialog_height=>'200'
+,p_dialog_width=>'400'
+,p_last_updated_by=>'MBECKER'
+,p_last_upd_yyyymmddhh24miss=>'20191120150211'
+);
+wwv_flow_api.create_page_plug(
+ p_id=>wwv_flow_api.id(64778646108128742)
+,p_plug_name=>'Delete ?'
+,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--noIcon:t-Alert--danger:t-Alert--removeHeading'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_api.id(40609468900079768)
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_point=>'BODY'
+,p_plug_source_type=>'NATIVE_HELP_TEXT'
+,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(64779011992128746)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_api.id(64778646108128742)
+,p_button_name=>'YES'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--danger:t-Button--simple'
+,p_button_template_id=>wwv_flow_api.id(40686800501079977)
+,p_button_image_alt=>'Yes'
+,p_button_position=>'TEMPLATE_DEFAULT'
+);
+wwv_flow_api.create_page_button(
+ p_id=>wwv_flow_api.id(64779125638128747)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_api.id(64778646108128742)
+,p_button_name=>'NO'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--simple'
+,p_button_template_id=>wwv_flow_api.id(40686800501079977)
+,p_button_image_alt=>'No'
+,p_button_position=>'TEMPLATE_DEFAULT'
+,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP::'
+);
+wwv_flow_api.create_page_branch(
+ p_id=>wwv_flow_api.id(64778916096128745)
+,p_branch_name=>'Go back to Seite 2'
+,p_branch_action=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP::&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'BEFORE_COMPUTATION'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_sequence=>10
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(64778523147128741)
+,p_name=>'P4_TEST_RUN_ID'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_api.id(64778646108128742)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attribute_01=>'Y'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(64778829539128744)
+,p_process_sequence=>10
+,p_process_point=>'ON_SUBMIT_BEFORE_COMPUTATION'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Delete'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'begin',
+'delete from uta_test_run where id = :P4_TEST_RUN_ID;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_api.id(64779011992128746)
+,p_process_when=>'YES'
+,p_process_when_type=>'REQUEST_EQUALS_CONDITION'
+,p_process_success_message=>'Test Run deleted Successfully!'
+);
+end;
+/

@@ -152,10 +152,9 @@ echo "Copy files ..."
 if [ "${mode}" == "init" ]; then
  cp -R .bash4xcl $targetpath
  cp -R db $targetpath
- cp -R apex $targetpath
- cp build.sh $targetpath
+ cp -R apex $targetpath 
  cp build.env $targetpath
- cp apply.sh $targetpath
+ cp -R .bash4xcl $targetpath
  cp .gitignore $targetpath
 else
 
@@ -433,7 +432,7 @@ then
   echo "calling apply"
 
   export SQLCL=sqlplus
-  ./apply.sh ${mode} ${version}
+  .bash4xcl/apply.sh ${mode} ${version}
 fi
 
 echo "Done"
